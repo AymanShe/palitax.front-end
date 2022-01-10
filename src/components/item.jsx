@@ -10,27 +10,14 @@ class Item extends React.Component {
     return (
       <div>
         <span className="m-2">{this.state.name}</span>
-        {/* <Counter
+        <Counter
           value={this.props.item.quantity}
-          onEditQuantity={(item, amount) =>
-            this.props.onEditQuantity(item, amount)
+          onEditValue={(amount) =>
+            this.props.onEditQuantity(this.props.item, amount)
           }
-        /> */}
+        />
         {/* TODO add this.disableIfZero() */}
 
-        <button
-          onClick={() => this.props.onEditQuantity(this.props.item, -1)}
-          className="btn btn-secondary btn-sm"
-        >
-          -
-        </button>
-        <span className="m-3">{this.props.item.quantity}</span>
-        <button
-          onClick={() => this.props.onEditQuantity(this.props.item, +1)}
-          className="btn btn-secondary btn-sm"
-        >
-          +
-        </button>
         <button
           onClick={() => this.props.onDelete(this.props.item.id)}
           className="btn btn-danger btn-sm m-2"

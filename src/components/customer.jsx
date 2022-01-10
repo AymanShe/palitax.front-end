@@ -25,7 +25,7 @@ class Customer extends React.Component {
   render() {
     return (
       <div>
-        <label for="customers">Select customer from the menu</label>
+        <label htmlFor="customers">Select customer from the menu</label>
         <br />
         <select name="customers" id="customers">
           {this.state.customers.map((customer) => (
