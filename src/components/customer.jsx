@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import configData from "../config.json";
 
 const api = Axios.create({
-  baseURL: "http://localhost:40253/api/Customers",
+  baseURL: configData.SERVER_URL + "/Customers",
 });
 class Customer extends React.Component {
   state = {

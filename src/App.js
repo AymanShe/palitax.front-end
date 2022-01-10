@@ -6,11 +6,7 @@ import Selector from './components/selector';
 
 class App extends React.Component {
   state = {
-    items: [
-      { id: 1, quantity: 0, name: "TV" },
-      { id: 2, quantity: 5, name: "Camera" },
-      { id: 3, quantity: 2, name: "Phone" },
-    ],
+    items: [],
   };
 
   handleDelete = (id) => {
@@ -38,11 +34,24 @@ class App extends React.Component {
     const items = [];
     this.setState({ items });
   };
+
+  handleAdd = (item, quantity) =>{
+    // TODO if item id === 0 or quantity === 0 show error 
+    const addedItem = this.state.items.find(c=>c.id == item.id)
+    if(addedItem != null){
+      this.editQuantity(addedItem, quantity)
+    }else{
+      this.setState({
+        items: [...this.state.items, { id: item.id, quantity: quantity, name: item.description }]
+      })
+    }
+  }
+
   render() { 
     return (
     <div className='container'>
       <Customer/>
-      <Selector/>
+      <Selector onAdd={(addedItem, quantity) => this.handleAdd(addedItem, quantity)}/>
       <Items items={this.state.items} onReset={this.handleReset} onEditQuantity={(item, amount) => this.editQuantity(item, amount)} onDelete={this.handleDelete} onSubmit={this.handleSubmit} />
 
     </div>
