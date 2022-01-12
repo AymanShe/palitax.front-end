@@ -46,6 +46,7 @@ class App extends React.Component {
     const items = [];
     this.setState({ items });
     this.setState({ result: null });
+    this.setState({customerId: 0});
   };
 
   handleSubmit = async () => {
