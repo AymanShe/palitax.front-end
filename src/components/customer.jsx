@@ -23,18 +23,30 @@ class Customer extends React.Component {
     }
   };
 
+  handleChange = (e) => {
+    this.props.onCustomerChange(e.target.value);
+  };
+
   render() {
     return (
-      <div>
-        <label htmlFor="customers">Select customer from the menu</label>
-        <br />
-        <select name="customers" id="customers">
-          {this.state.customers.map((customer) => (
-            <option key={customer.id} value="{customer.id}">
-              {customer.fullName}
-            </option>
-          ))}
-        </select>
+      <div className="card m-2">
+        <h5
+          className="card-header  text-white"
+          style={{ background: "steelblue" }}
+        >
+          Customer
+        </h5>
+        <div className="card-body">
+          <h5 className="card-title">Select customer from the menu</h5>
+          <select name="customers" id="customers" onChange={this.handleChange}>
+            <option value="0">Choose Customer</option>
+            {this.state.customers.map((customer) => (
+              <option key={customer.id} value={customer.id}>
+                {customer.fullName}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     );
   }

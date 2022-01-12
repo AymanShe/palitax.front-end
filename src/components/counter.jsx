@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 
 class Counter extends React.Component {
-  // TODO add this.disableIfZero()
-  disableIfZero() {
-    return this.props.item.quantity === 0 ? " true" : "false";
-  }
-
   render() {
     return (
-      <React.Fragment>
+      <div>
         <button
+          disabled={this.props.value <= 1}
           onClick={() => this.props.onEditValue(-1)}
           className="btn btn-secondary btn-sm"
         >
@@ -22,7 +18,7 @@ class Counter extends React.Component {
         >
           +
         </button>
-      </React.Fragment>
+      </div>
     );
   }
 }

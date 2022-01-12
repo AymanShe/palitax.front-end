@@ -3,10 +3,27 @@ import Customer from './components/customer';
 import './App.css';
 import Items from './components/items';
 import Selector from './components/selector';
+import Invoice from './components/invoice';
+import Axios from "axios";
+import configData from "./config.json";
+
+import Spring from 'react-spring';
+import react from 'react';
+
+
+const api = Axios.create({
+  baseURL: configData.SERVER_URL + "/Calculators",
+  headers: {
+    'accept': "*/*",
+    'Content-Type': "application/json"
+  }
+});
 
 class App extends React.Component {
   state = {
     items: [],
+    customerId: 0,
+    result:null
   };
 
   handleDelete = (id) => {
@@ -27,12 +44,22 @@ class App extends React.Component {
   handleReset = () => {
     const items = [];
     this.setState({ items });
+    this.setState({ result: null });
   };
 
-  handleSubmit = () => {
-    //TODO change to submit action
-    const items = [];
-    this.setState({ items });
+  handleSubmit = async () => {
+    //TODO try catch
+    let result = await api.post('', {
+      customerId: this.state.customerId,
+      itemsList: 
+        this.state.items.map((item) => (
+          {
+            id: item.id,
+            quantity: item.quantity
+          }
+        ))
+    })
+    this.setState({ result: result.data });
   };
 
   handleAdd = (item, quantity) =>{
@@ -47,14 +74,30 @@ class App extends React.Component {
     }
   }
 
+  handleCustomerChanged = (id) =>{
+    this.setState({ customerId: id })
+  }
+
   render() { 
     return (
-    <div className='container'>
-      <Customer/>
-      <Selector onAdd={(addedItem, quantity) => this.handleAdd(addedItem, quantity)}/>
-      <Items items={this.state.items} onReset={this.handleReset} onEditQuantity={(item, amount) => this.editQuantity(item, amount)} onDelete={this.handleDelete} onSubmit={this.handleSubmit} />
+    <react.Fragment >
+      {!this.state.result && <div className='container' style={{width: 50+'rem'}}>
+        <Customer onCustomerChange={(customerId) => this.handleCustomerChanged(customerId)}/>
+        <Selector onAdd={(addedItem, quantity) => this.handleAdd(addedItem, quantity)}/>
+        
+        {this.state.items.length > 0 && (
+        <Items 
+          items={this.state.items} 
+          onReset={this.handleReset} 
+          onEditQuantity={(item, amount) => this.editQuantity(item, amount)} 
+          onDelete={this.handleDelete} 
+          onSubmit={this.handleSubmit} />
+        )}
+      </div> }
+      
+      {this.state.result && <Invoice result={this.state.result} onReset={this.handleReset}/>}
 
-    </div>
+    </react.Fragment>
       );
   }
 }
