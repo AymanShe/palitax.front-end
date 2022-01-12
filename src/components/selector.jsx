@@ -23,6 +23,7 @@ class Selector extends React.Component {
       let data = await api.get("/").then(({ data }) => data);
       this.setState({ items: data });
     } catch (err) {
+      this.props.showError("Something went wrong. Couldn't get items");
       console.log(err);
     }
   };

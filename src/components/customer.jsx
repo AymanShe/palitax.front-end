@@ -19,6 +19,7 @@ class Customer extends React.Component {
       let data = await api.get("/").then(({ data }) => data);
       this.setState({ customers: data });
     } catch (err) {
+      this.props.showError("Something went wrong. Couldn't get customers");
       console.log(err);
     }
   };

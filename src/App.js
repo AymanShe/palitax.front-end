@@ -108,8 +108,8 @@ class App extends React.Component {
       <ToastContainer
         />
       {!this.state.result && <div className='container' style={{width: 50+'rem'}}>
-        <Customer onCustomerChange={(customerId) => this.handleCustomerChanged(customerId)}/>
-        <Selector onAdd={(addedItem, quantity) => this.handleAdd(addedItem, quantity)}/>
+        <Customer showError={(message) => this.showError(message)} onCustomerChange={(customerId) => this.handleCustomerChanged(customerId)}/>
+        <Selector showError={(message) => this.showError(message)} onAdd={(addedItem, quantity) => this.handleAdd(addedItem, quantity)}/>
         
         {this.state.items.length > 0 && (
         <Items 
