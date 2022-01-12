@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Customer from './components/customer';
 import './App.css';
 import Items from './components/items';
@@ -50,7 +50,7 @@ class App extends React.Component {
   };
 
   handleSubmit = async () => {
-    if(this.state.customerId == 0){
+    if(this.state.customerId === 0){
       this.showError('You have to choose a customer first')
     }else{
 
@@ -70,10 +70,10 @@ class App extends React.Component {
   };
 
   handleAdd = (item, quantity) =>{
-    if(item == undefined){
+    if(item === undefined){
       this.showError('You have to choose an item first')
     }else{
-      const addedItem = this.state.items.find(c=>c.id == item.id)
+      const addedItem = this.state.items.find(c=>c.id === item.id)
       if(addedItem != null){
         this.editQuantity(addedItem, quantity)
       }else{
