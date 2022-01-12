@@ -6,8 +6,9 @@ import Selector from './components/selector';
 import Invoice from './components/invoice';
 import Axios from "axios";
 import configData from "./config.json";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import Spring from 'react-spring';
 import react from 'react';
 
 
@@ -48,29 +49,37 @@ class App extends React.Component {
   };
 
   handleSubmit = async () => {
-    //TODO try catch
-    let result = await api.post('', {
-      customerId: this.state.customerId,
-      itemsList: 
+    if(this.state.customerId == 0){
+      this.showError('You have to choose a customer first')
+    }else{
+
+      //TODO try catch
+      let result = await api.post('', {
+        customerId: this.state.customerId,
+        itemsList: 
         this.state.items.map((item) => (
           {
             id: item.id,
             quantity: item.quantity
           }
-        ))
-    })
-    this.setState({ result: result.data });
+          ))
+        })
+        this.setState({ result: result.data });
+      }
   };
 
   handleAdd = (item, quantity) =>{
-    // TODO if item id === 0 or quantity === 0 show error 
-    const addedItem = this.state.items.find(c=>c.id == item.id)
-    if(addedItem != null){
-      this.editQuantity(addedItem, quantity)
+    if(item == undefined){
+      this.showError('You have to choose an item first')
     }else{
-      this.setState({
-        items: [...this.state.items, { id: item.id, quantity: quantity, name: item.description }]
-      })
+      const addedItem = this.state.items.find(c=>c.id == item.id)
+      if(addedItem != null){
+        this.editQuantity(addedItem, quantity)
+      }else{
+        this.setState({
+          items: [...this.state.items, { id: item.id, quantity: quantity, name: item.description }]
+        })
+      }
     }
   }
 
@@ -78,9 +87,26 @@ class App extends React.Component {
     this.setState({ customerId: id })
   }
 
+  showError = (message) =>{
+    toast.error(message, {
+      position:"top-right",
+      autoClose:5000,
+      hideProgressBar:true,
+      newestOnTop:false,
+      closeOnClick:true,
+      rtl:false,
+      pauseOnFocusLoss:true,
+      draggable:true,
+      pauseOnHover:true,
+      theme:"colored",
+    });
+  }
+
   render() { 
     return (
     <react.Fragment >
+      <ToastContainer
+        />
       {!this.state.result && <div className='container' style={{width: 50+'rem'}}>
         <Customer onCustomerChange={(customerId) => this.handleCustomerChanged(customerId)}/>
         <Selector onAdd={(addedItem, quantity) => this.handleAdd(addedItem, quantity)}/>
